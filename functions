@@ -1,0 +1,81 @@
+function hello() {
+  echo 'Hello World'
+}
+
+function hello_name() {
+  echo $1
+}
+
+function exist() {
+  value=$( grep -ic $2 $1)
+  if [ $value -gt 0 ]; then
+	echo 0
+  else
+	echo 1
+  fi
+}
+
+function add_line(){
+  cp $1 copie.txt
+  echo $2 >> $1
+  echo 0
+}
+
+function replace_line(){
+  cp $1 replace_copie.txt
+  #tester avec exist
+  value=$( exist $1 $2 )
+  if [ $value -eq 0 ]; then 
+	sed -i "/$2/c\\$3" $1
+	echo 0
+  else 
+	echo 1
+  fi
+}
+
+function remove_line(){
+  cp $1 remove_copie.txt
+  #tester avec exist
+  value=$( exist $1 $2 )
+  if [ $value -eq 0 ]; then 
+	sed -i "/$2/c\\" $1
+	echo 0
+  else 
+	echo "le fichier $1 ne contient pas de $2"
+  fi
+}
+
+function save_files(){
+  #chemin home/rodney/Documents/code/bash/ase20_tp1/ase20/original_files/
+
+  chemin=/home/master1/ase20/original_files
+  if [ ! -d $chemin ]; then 
+ 	    mkdir /home/master1/ase20/original_files
+  fi
+
+  for f in `cat $1` 
+  do
+  	cp $f /home/master1/ase20/original_files
+  done
+}
+
+function restore_files(){
+  #chemin home/rodney/Documents/code/bash/ase20_tp1/ase20/original_files/
+
+  chemin=/home/master1/ase20/original_files
+  if [ -d $chemin ]; then 
+    for f in `cat $1` 
+    do
+      if [ -e $f ]; then
+        cp $f /home/master1/ase20/restore_files/
+      fi
+    done 
+  else
+    echo "le fichier $chemin n'existe pas"
+  fi 
+}
+
+
+
+
+
