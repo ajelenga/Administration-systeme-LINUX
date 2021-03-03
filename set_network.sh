@@ -2,10 +2,12 @@
 . functions
 . param
 
-if [ $# -ne 1 ]; then
+
+if [ ! $# -eq 1 ]; then
 	echo "Usage set_network non"
 	exit
 fi
+
 val=$( exist $MACHINE_LISTE $1 )
 ip=$( grep $1 $MACHINE_LISTE | cut -d ' ' -f 1 )
 if [ $val -eq 0 ]; then
@@ -13,7 +15,7 @@ if [ $val -eq 0 ]; then
 	echo $ip
 	echo "modification de l'adresse ip"
 	ifconfig $IF $ip
-	echo $ip
+	echo "voir resultat avec la cmd ifconfig"
 fi
 
 valeur=$( exist /etc/sysconfig/network-scripts/ifcfg-enp0s3 BOOTPROTO )
@@ -53,9 +55,15 @@ fi
 
 echo "etape4"
 IFS=$'\n'       # make newlines the only separator
-    for a in $( cat /etc/hosts )    
+    for a in $( cat $MACHINE_LISTE )    
     do
-        echo "$a"
+	valeur1=$( exist /etc/hosts $a )
+	echo $valeur4
+
+        if [ $valeur4 -eq 1 ]; then
+	
+		add_line /etc/hosts $a	
+	fi
     done   
 
 echo "etape 5"

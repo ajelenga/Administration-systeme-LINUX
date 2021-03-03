@@ -9,6 +9,7 @@ function hello_name() {
 function exist() {
   value=$( grep -ic $2 $1)
   if [ $value -gt 0 ]; then
+	#okey
 	echo 0
   else
 	echo 1
@@ -27,6 +28,7 @@ function replace_line(){
   value=$( exist $1 $2 )
   if [ $value -eq 0 ]; then 
 	sed -i "/$2/c\\$3" $1
+	#okey
 	echo 0
   else 
 	echo 1
@@ -39,6 +41,7 @@ function remove_line(){
   value=$( exist $1 $2 )
   if [ $value -eq 0 ]; then 
 	sed -i "/$2/c\\" $1
+	#okey
 	echo 0
   else 
 	echo "le fichier $1 ne contient pas de $2"
@@ -63,6 +66,7 @@ function restore_files(){
   #chemin home/rodney/Documents/code/bash/ase20_tp1/ase20/original_files/
 
   chemin=/home/master1/ase20/original_files
+  mkdir -p $chemin
   if [ -d $chemin ]; then 
     for f in `cat $1` 
     do

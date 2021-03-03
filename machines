@@ -1,3 +1,4 @@
+127.0.0.1      localhost	
 192.168.56.101 serveur
 192.168.56.102 client
 192.168.56.103 esclave
