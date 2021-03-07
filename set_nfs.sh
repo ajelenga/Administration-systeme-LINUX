@@ -23,7 +23,7 @@ if [ $host == $SERVEUR_NFS ]; then
                  # name nom de la machine
                 name=$( grep $a $MACHINE_LISTE | cut -d ' ' -f 2 )
 
-
+                # mettre les if afin de ne pas  avoir des ereurs style duplication ...
                 echo "" > "/etc/exports"
                 add_line "/etc/exports" "$EXPORT_APP $name($EXPORT_APP_OPT)"
                 add_line "/etc/exports" "$EXPORT_HOME $name($EXPORT_HOME_OPT)"
