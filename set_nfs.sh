@@ -2,29 +2,43 @@
 . functions
 . param
 
-#ma_machine=hostname -a 
+#on desactive
 
-#if [ $ma_machine -eq "serveur" ]; then 
-	#echo "machine serveur"
-#	systemctl enable nfs-server
-#	systemctl start nfs-server
-#	systemctl stop firewalld.service
-	cheminopt=/export/opt
-	cheminhome=/export/home
-	#mkdir -p $cheminhome
-	#mkdir -p $cheminopt 
-	#mise a jour 
+systemctl disable firewalld.service
+systemctl stop firewalld.service
+systemctl disable iptables.service
+systemctl stop iptables.service
 
-		IFS=$'\n'
-		#echo $( cat $MACHINE_LISTE )
-		echo "------------------------------"
-		nom=$( cut -d ' ' -f2 $MACHINE_LISTE  )
-        #echo $nom
-        for a in $nom
-    	do
-        	echo "$cheminopt $a()"
-    	done 
-    	
-#else
-#	echo "machine non serveur"
-#fi
+host=$( hostname -a )
+
+if [ $host == $SERVEUR_NFS ]; then
+        echo "machine serveur"
+        #Activer et démarrer nfs-server
+        systemctl enable nfs-server
+        systemctl start nfs-server
+
+        IFS=$'\n'       # make newlines the only separator
+        for a in $( cat $MACHINE_LISTE)
+        do
+                 # name nom de la machine
+                name=$( grep $a $MACHINE_LISTE | cut -d ' ' -f 2 )
+
+
+                echo "" > "/etc/exports"
+                add_line "/etc/exports" "$EXPORT_APP $name($EXPORT_APP_OPT)"
+                add_line "/etc/exports" "$EXPORT_HOME $name($EXPORT_HOME_OPT)"
+        done
+
+        #creation des dossiers en tenant comptes qu'il existe ou pas
+        mkdir -p $EXPORT_HOME
+        mkdir -p $EXPORT_APP
+
+        exportfs -a
+        exportfs -f
+
+else
+        serveur:/export/home     /home/serveur   nfs     hard,rw   0 0
+        serveur:/export/opt      /opt            nfs     soft,ro   0 0
+
+fi
+
