@@ -1,6 +1,7 @@
+
 MACHINE_LISTE=machines
 IF=enp0s3
-DOMAINE_IP="ubo.local"
+DOMAINE_IP=ubo.local
 
 SERVEUR_NFS=serveur
 EXPORT_HOME=/export/home
@@ -12,3 +13,6 @@ EXPORT_APP=/export/opt
 EXPORT_APP_OPT=ro
 MOUNT_APP=/opt
 MOUNT_APP_OPT=soft,ro
+
+DOMAIN_NIS=dodo
+SERVEUR_NIS=serveur

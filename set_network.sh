@@ -57,7 +57,7 @@ echo "etape4"
 IFS=$'\n'       # make newlines the only separator
     for a in $( cat $MACHINE_LISTE )    
     do
-	valeur1=$( exist /etc/hosts $a )
+	valeur4=$( exist /etc/hosts $a )
 	echo $valeur4
 
         if [ $valeur4 -eq 1 ]; then

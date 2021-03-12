@@ -9,8 +9,8 @@ systemctl stop firewalld.service
 systemctl disable iptables.service
 systemctl stop iptables.service
 
-host=$( hostname -a )
-
+host=$( hostname )
+echo $host
 if [ $host == $SERVEUR_NFS ]; then
         echo "machine serveur"
         #Activer et démarrer nfs-server
@@ -37,8 +37,23 @@ if [ $host == $SERVEUR_NFS ]; then
         exportfs -f
 
 else
-        serveur:/export/home     /home/serveur   nfs     hard,rw   0 0
-        serveur:/export/opt      /opt            nfs     soft,ro   0 0
+	line="serveur:/export/home     /home/serveur   nfs     hard,rw   0 0"
+	valeur=$( exist /etc/fstab  $line )
+	if [ $valeur -eq 0 ]; then
+		echo "la ligne : $line a deja ete ajouter "
+	else
+		add_line /etc/fstab $line
+	fi
+
+	line="serveur:/export/opt      /opt            nfs     soft,ro   0 0"
+	valeur=$( exist /etc/fstab  $line )
+	if [ $valeur -eq 0 ]; then
+		echo "la ligne : $line a deja ete ajouter "
+	else
+		add_line /etc/fstab $line
+	fi
+       
+       
 
 fi
 
